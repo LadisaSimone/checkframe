@@ -1,0 +1,21 @@
+name: checkframe
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10.18
+  - pip
+  - pip:
+      - pandas
+      - numpy
+      - scipy
+      - scikit-learn
+      - matplotlib
+      - seaborn
+      - plotly
+      - openpyxl
+      - pyarrow
+      - jupyter
+      - ipykernel
+      - anthropic
+      - python-dotenv
