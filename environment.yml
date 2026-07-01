@@ -19,3 +19,4 @@ dependencies:
       - ipykernel
       - anthropic
       - python-dotenv
+      - streamlit

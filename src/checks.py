@@ -331,13 +331,15 @@ def check_currency_iso4217(df: pd.DataFrame) -> CheckResult:
 
     failed = df_check[mask_failed][
         ['business_date', 'region', 'exchange_name', 'currency_name', 'currency_iso']
-    ].drop_duplicates('currency_name')
+    ]
 
-    # List unique unmapped currencies for reporting
-    unmapped = sorted(df_check[mask_no_mapping]['currency_name'].unique().tolist())
+    # Unique currency names that failed the check — either no mapping was found,
+    # or the mapped code is no longer in the official ISO 4217 list (e.g. retired currencies)
+    unmapped = sorted(df_check.loc[mask_failed, 'currency_name'].unique().tolist())
 
     message = (
-        f"Found {df_check[mask_failed]['currency_name'].nunique()} unique currency names "
+        f"Found {len(failed):,} rows ({len(failed) / len(df_check):.2%}) using "
+        f"{df_check[mask_failed]['currency_name'].nunique()} unique currency names "
         f"that could not be mapped to a valid ISO 4217 code. "
         f"Unmapped: {unmapped[:10]}{'...' if len(unmapped) > 10 else ''}"
     )

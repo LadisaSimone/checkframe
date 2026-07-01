@@ -37,10 +37,16 @@ checkframe/
 │   ├── __init__.py
 │   ├── loader.py               # Data ingestion, cleaning, type casting
 │   ├── checks.py               # CheckRegistry + all check functions
-│   └── reporter.py             # LLM explainability via Claude API
+│   ├── reporter.py             # LLM explainability via Claude API
+│   └── export_snapshot.py      # Exports a results snapshot for the dashboard
 │
 ├── reports/
 │   └── dq_report.md            # Auto-generated regulatory report
+│
+├── dashboard/
+│   ├── app.py                  # Streamlit dashboard
+│   ├── sample_results.json     # Committed snapshot of check results
+│   └── sample_report.md        # Committed copy of the LLM narrative report
 │
 ├── environment.yml             # Conda environment specification
 ├── .env.example                # API key template
@@ -153,6 +159,30 @@ The architecture supports **50 basic, 20 advanced, and 10 ML checks** — adding
 - **Croatian Kuna (HRK)** flagged as the sole unmapped currency — retired when Croatia adopted the Euro in January 2023
 - **1,741 ML-only anomalies** not caught by Z-score — genuine multivariate patterns invisible to univariate checks
 - **Bolsa Latinoamericana de Valores (Latinex)** — highest anomaly rate (13.6%) due to simultaneous erratic behaviour across REITs, Investment Funds, and Bonds
+
+---
+
+## Dashboard
+
+An interactive Streamlit dashboard showcases the framework's output: summary metrics, a
+filterable results table, a failure-rate-by-category chart, expandable failed-check
+details, and the full LLM-generated executive report.
+
+It ships with a committed sample snapshot (`dashboard/sample_results.json` and
+`dashboard/sample_report.md`), so it runs immediately with no dataset or API key required.
+
+```bash
+pip install streamlit
+streamlit run dashboard/app.py
+```
+
+To regenerate the snapshot from your own data (after running `01_eda.ipynb` at least
+once to build the Parquet cache):
+```bash
+python -m src.export_snapshot
+```
+
+> **Screenshot:** to be added after first run.
 
 ---
 

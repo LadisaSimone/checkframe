@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "dataset_name": "WFE Market Data",
+    "total_rows": 626630,
+    "date_range": {
+      "start": "2021-01-01",
+      "end": "2023-12-01"
+    },
+    "generated_at": "2026-07-01T11:17:25Z"
+  },
+  "checks": [
+    {
+      "check_id": "VAL_001",
+      "category": "validation",
+      "check_name": "Exchange code format (MIC proxy)",
+      "passed": true,
+      "total_rows": 626630,
+      "failed_rows": 0,
+      "failure_rate": 0.0,
+      "message": "Found 0 rows with exchange_name shorter than 3 characters. Additionally 0 rows have null exchange_name. Full MIC validation requires ISO 20022 reference join."
+    },
+    {
+      "check_id": "VAL_002",
+      "category": "validation",
+      "check_name": "Currency ISO 4217 compliance",
+      "passed": false,
+      "total_rows": 626630,
+      "failed_rows": 3804,
+      "failure_rate": 0.006071,
+      "message": "Found 3,804 rows (0.61%) using 1 unique currency names that could not be mapped to a valid ISO 4217 code. Unmapped: ['Croatian Kuna']"
+    },
+    {
+      "check_id": "BAS_001",
+      "category": "basic",
+      "check_name": "Null value check (Stock aggregation)",
+      "passed": false,
+      "total_rows": 212033,
+      "failed_rows": 138881,
+      "failure_rate": 0.654997,
+      "message": "138,881 Stock-type rows have null value (65.5% of Stock rows). These represent exchanges that did not submit data for the period."
+    },
+    {
+      "check_id": "BAS_002",
+      "category": "basic",
+      "check_name": "Negative monetary value check",
+      "passed": true,
+      "total_rows": 97594,
+      "failed_rows": 0,
+      "failure_rate": 0.0,
+      "message": "0 Monetary rows have negative value. No issues found."
+    },
+    {
+      "check_id": "BAS_003",
+      "category": "basic",
+      "check_name": "Zero market cap check",
+      "passed": false,
+      "total_rows": 4371,
+      "failed_rows": 156,
+      "failure_rate": 0.03569,
+      "message": "156 Market Capitalisation rows have value == 0. These may represent genuine zero-cap exchanges or misreported nulls."
+    },
+    {
+      "check_id": "BAS_004",
+      "category": "basic",
+      "check_name": "Exchange name string length check",
+      "passed": true,
+      "total_rows": 626630,
+      "failed_rows": 0,
+      "failure_rate": 0.0,
+      "message": "0 unique exchange names have suspicious length (< 3 or > 100 characters)."
+    },
+    {
+      "check_id": "ADV_001",
+      "category": "advanced",
+      "check_name": "Z-score outlier detection (threshold=3.5)",
+      "passed": false,
+      "total_rows": 159231,
+      "failed_rows": 343,
+      "failure_rate": 0.002154,
+      "message": "343 rows flagged as outliers (|Z-score| > 3.5) using log-transformed values within exchange-indicator groups. Top offender: Stock Exchange of Mauritius"
+    },
+    {
+      "check_id": "ADV_002",
+      "category": "advanced",
+      "check_name": "Month-on-month spike detection (threshold=5.0x)",
+      "passed": false,
+      "total_rows": 159231,
+      "failed_rows": 7223,
+      "failure_rate": 0.045362,
+      "message": "7,223 rows show month-on-month ratio > 5.0x or < 1/5.0x. May indicate data errors or extreme market events requiring contextual review."
+    },
+    {
+      "check_id": "ML_001",
+      "category": "ml",
+      "check_name": "Isolation Forest anomaly detection",
+      "passed": false,
+      "total_rows": 3955,
+      "failed_rows": 80,
+      "failure_rate": 0.020228,
+      "message": "Isolation Forest detected 80 anomalies (2.02% of scored rows) using contamination=0.02. Most anomalous: Zagreb Stock Exchange"
+    }
+  ]
+}
